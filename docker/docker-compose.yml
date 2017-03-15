@@ -3,11 +3,12 @@ version: '2'
 services:
 
   hadoop-master:
-    image: sequenceiq/hadoop-docker:2.7.0
+    image: dataday/hadoop-master
     ports:
       - 8088:8088
       - 50070:50070
       - 50075:50075
+      - 10020:10020
 
   ccwordcount:
     image: dataday/cc-examples
@@ -22,5 +23,14 @@ services:
     volumes:
       - ../data:/app/data
     command: ./run-example.sh st
+    depends_on:
+      - hadoop-master
+
+  pig:
+    image: dataday/hadoop-client
+    volumes:
+      - ../data:/app/data
+    command: /bin/bash
+    tty: true
     depends_on:
       - hadoop-master

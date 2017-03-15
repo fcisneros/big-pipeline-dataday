@@ -2,7 +2,7 @@
 
 
 ## Requerimientos
-Para poder reproducir el workshop es necesario lo siguiente:
-* Algún SO *nix (linux/osx)
-* Amazon AWS CLI ([awscli](https://aws.amazon.com/cli/))
+Para el workshop es necesario lo siguiente:
+* SO: *nix (linux/OSX)
 * [docker engine](https://docs.docker.com/engine/installation/)
+* [docker-compose cli](https://docs.docker.com/compose/install/)

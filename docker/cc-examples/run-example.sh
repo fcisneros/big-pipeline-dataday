@@ -1,7 +1,4 @@
 #!/bin/bash
-# This script must be executed inside a dataday/hadoop-client container
-# It is assumed that the working dir is set during start up and the
-# necessary volumes are mounted
 
 DATADIR="/app/data"
 JAR="/app/cc-warc-examples.jar"
