@@ -4,25 +4,23 @@ services:
 
   hadoop-master:
     image: dataday/hadoop-master
+    volumes:
+      - ../data:/app/data
     ports:
       - 8088:8088
       - 50070:50070
-      - 50075:50075
-      - 10020:10020
 
-  ccwordcount:
+
+  # ServerTypes using MapReduce Java API
+  st-mapred:
     image: dataday/cc-examples
     volumes:
       - ../data:/app/data
-    command: ./run-example.sh wc
-    depends_on:
-      - hadoop-master
-
-  ccservertype:
-    image: dataday/cc-examples
-    volumes:
-      - ../data:/app/data
-    command: ./run-example.sh st
+    #command: 'st s3a://commoncrawl/crawl-data/CC-MAIN-2013-48/segments/1386163035819/wat/CC-MAIN-20131204131715-00000-ip-10-33-133-15.ec2.internal.warc.wat.gz /app/data'
+    #command: 'st s3a://commoncrawl/crawl-data/CC-MAIN-2013-48/segments/1386163035819/wat/*.warc.wat.gz /app/data'
+    command: 'st file:///app/data/*.warc.wat.gz /app/data'
+    environment:
+      - MASTER_HOSTNAME=hadoop-master
     depends_on:
       - hadoop-master
 
