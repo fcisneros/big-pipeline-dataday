@@ -21,24 +21,17 @@ EOF
 exit 1
 }
 
-if [[ $1 == "wc" ]]; then
-  inputPath="${2}"
-  outputPath="${3}/wet-wordcount"
+inputPath="${2}"
+outputPath="${3}"
 
+if [[ $1 == "wc" ]]; then
   hadoop jar $JAR org.commoncrawl.examples.mapreduce.WETWordCount -Dinput=$inputPath -Doutput=$outputPath && \
-  mkdir -p $outputPath && rm -f $outputPath/part* && \
-  hadoop fs -get $outputPath/part* $outputPath
 
   exit 0
 fi
 
 if [[ $1 == "st" ]]; then
-  inputPath="${2}"
-  outputPath="${3}/wat-servertype"
-
   hadoop jar $JAR org.commoncrawl.examples.mapreduce.WATServerType -Dinput=$inputPath -Doutput=$outputPath && \
-  mkdir -p $outputPath && rm -f $outputPath/part* && \
-  hadoop fs -get $outputPath/part* $outputPath
 
   exit 0
 fi

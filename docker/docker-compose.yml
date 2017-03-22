@@ -10,21 +10,40 @@ services:
       - 8088:8088
       - 50070:50070
 
-
-  # ServerTypes using MapReduce Java API
-  st-mapred:
-    image: dataday/cc-examples
+  # Copy local data to hdfs
+  data2hdfs:
+    image: dataday/hadoop-client
     volumes:
       - ../data:/app/data
-    #command: 'st s3a://commoncrawl/crawl-data/CC-MAIN-2013-48/segments/1386163035819/wat/CC-MAIN-20131204131715-00000-ip-10-33-133-15.ec2.internal.warc.wat.gz /app/data'
-    #command: 'st s3a://commoncrawl/crawl-data/CC-MAIN-2013-48/segments/1386163035819/wat/*.warc.wat.gz /app/data'
-    command: 'st file:///app/data/*.warc.wat.gz /app/data'
-    environment:
-      - MASTER_HOSTNAME=hadoop-master
+    command: bash -c 'hadoop fs -mkdir -p /app/data && hadoop fs -put -f /app/data/* /app/data'
     depends_on:
       - hadoop-master
 
-  pig:
+  # Wordcount using MapReduce Java API
+  wc-mapred:
+    image: dataday/cc-examples
+    volumes:
+      - ../data:/app/data
+    #command: 'wc s3a://commoncrawl/crawl-data/CC-MAIN-2013-48/segments/1386163035819/wet/CC-MAIN-20131204131715-00000-ip-10-33-133-15.ec2.internal.warc.wet.gz /app/data/wordcount'
+    #command: 'wc s3a://commoncrawl/crawl-data/CC-MAIN-2013-48/segments/1386163035819/wet/*.warc.wat.gz /app/data/wordcount'
+    command: 'wc /app/data/*.warc.wet.gz /app/data/wordcount'
+    depends_on:
+      - data2hdfs
+
+
+  # PageRank using Pig
+  links-pig:
+    image: dataday/pig-client
+    command: 'links.pig -param INPUT=/app/data/*.warc.wat.gz -param OUTPUT=/app/data/pagerank/links'
+    depends_on:
+      - data2hdfs
+
+  pagerank-pig:
+    image: dataday/pig-client
+    command: 'pagerank.py'
+
+  # Interactive client terminal
+  client:
     image: dataday/hadoop-client
     volumes:
       - ../data:/app/data
