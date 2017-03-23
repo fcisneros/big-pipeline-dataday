@@ -30,12 +30,32 @@ STORE new_pagerank
     USING PigStorage('\t');
 """)
 
-params = { 'd': '0.5', 'docs_in': '/app/data/pagerank/links' }
-for i in range(2):
-   out = "/app/data/pagerank/data_" + str(i + 1)
+params = { 'd': '0.85', 'docs_in': '/app/data/pagerank/links' }
+out = ""
+for i in range(10):
+   out = "/app/data/pagerank/iter_" + str(i + 1)
    params["docs_out"] = out
    Pig.fs("rmr " + out)
    stats = UPDATE.bind(params).runSingle()
    if not stats.isSuccessful():
-      raise 'failed'
+      raise RuntimeError('Failed pagerank iter: ' + str(i + 1))
    params["docs_in"] = out
+
+SORT = Pig.compile("""
+pagerank =
+    LOAD '$docs_in'
+    USING PigStorage('\t')
+    AS ( url: chararray, pr: float, links:{ link: ( url: chararray ) } );
+
+reduced = FOREACH pagerank GENERATE url, pr;
+
+sorted = ORDER reduced BY pr DESC;
+
+STORE sorted INTO '$docs_out' USING PigStorage('\t');
+""")
+
+params = {'docs_in': out, 'docs_out': '/app/data/pagerank/sorted'}
+Pig.fs("rmr " + params['docs_out'])
+stats = SORT.bind(params).runSingle()
+if not stats.isSuccessful():
+   raise RuntimeError('Failed pagerank sort')

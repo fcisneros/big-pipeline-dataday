@@ -3,6 +3,7 @@
 
 ## Requerimientos
 Para el workshop es necesario lo siguiente:
-* SO: *nix (linux/OSX)
-* [docker engine](https://docs.docker.com/engine/installation/)
-* [docker-compose cli](https://docs.docker.com/compose/install/)
+* SO: Linux | macOSX
+* [docker-engine](https://docs.docker.com/engine/installation/)
+* [docker-compose](https://docs.docker.com/compose/install/) cli
+* [aws cli] (https://aws.amazon.com/cli/)

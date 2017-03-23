@@ -1,7 +1,7 @@
 #!/bin/bash
 
 CURDIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)
-cd ${CURDIR}
+cd ${CURDIR}/../docker
 
 hash docker 2>/dev/null || { echo >&2 ">>> docker is not installed or is not on your PATH env. Aborting."; exit 1; }
 
