@@ -2,7 +2,7 @@
 
 set pig.splitCombination false;
 
-REGISTER /app/lib/webarchive-commons-jar-with-dependencies.jar;
+REGISTER /usr/local/lib/webarchive-commons-jar-with-dependencies.jar;
 DEFINE resolve org.archive.hadoop.func.URLResolverFunc();
 
 rmf $OUTPUT

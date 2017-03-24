@@ -1,9 +1,6 @@
 #!/bin/bash
 
-# Runs a pig script and get the output from HDFS to local fs.
-
-CURDIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)
-cd ${CURDIR}/
+# Runs a pig script and prints out any error log file, if any.
 
 hash pig 2>/dev/null || { echo >&2 ">>> pig binary is not installed or is not on your PATH env. Aborting."; exit 1; }
 
