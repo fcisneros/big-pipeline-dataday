@@ -33,5 +33,8 @@ ADD conf/* $HADOOP_CONF_DIR/
 # hadoop-aws-*-.jar is not on classpath by default, so let's add it
 RUN echo 'export HADOOP_CLASSPATH=$HADOOP_CLASSPATH:$HADOOP_HOME/share/hadoop/tools/lib/*' >> $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh
 
+# Add some 3rd party libraries
+ADD https://github.com/fcisneros/webarchive-commons/releases/download/webarchive-commons-1.1.5-hadoop2/webarchive-commons-jar-with-dependencies.jar $PREFIX/lib/webarchive-commons-jar-with-dependencies.jar
+
 
 CMD ["/bin/bash"]

@@ -45,15 +45,6 @@ services:
   # PageRank using Pig
   links-pig:
     build: ./01-pagerank
-    command: '/pagerank/links.pig -param INPUT=/app/data/*.warc.wat.gz -param OUTPUT=/app/pagerank/links'
+    command: '/app/data/*.warc.wat.gz /app/pagerank 0.5'
     depends_on:
       - hadoop-master
-
-  pagerank-pig:
-    build: ./01-pagerank
-    image: dataday/pig-client
-    command: '/pagerank/pagerank.py'
-    depends_on:
-      - hadoop-master
-
-

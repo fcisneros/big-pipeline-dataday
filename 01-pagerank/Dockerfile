@@ -1,5 +1,7 @@
-FROM dataday/pig-client
+FROM dataday/hadoop-client
 
 WORKDIR /pagerank
 
-ADD *.pig *.py ./
+ADD *.pig *.py *.sh ./
+
+ENTRYPOINT ["/pagerank/run.sh"]

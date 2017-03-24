@@ -1,7 +1,0 @@
-FROM dataday/hadoop-client
-
-ADD https://github.com/fcisneros/webarchive-commons/releases/download/webarchive-commons-1.1.5-hadoop2/webarchive-commons-jar-with-dependencies.jar /usr/local/lib/webarchive-commons-jar-with-dependencies.jar
-
-ADD run-pig.sh /usr/local/bin/run-pig.sh
-
-ENTRYPOINT ["/usr/local/bin/run-pig.sh"]

@@ -3,6 +3,13 @@
 
 from org.apache.pig.scripting import *
 
+base_output_path="$OUTPATH"
+links_input="$INPUT"
+damping_factor=$DAMPING
+
+if not damping_factor:
+    damping_factor = 0.75
+
 UPDATE = Pig.compile("""
 --PR(A) = (1-d) + d (PR(T1)/C(T1) + ... + PR(Tn)/C(Tn))
 
@@ -30,10 +37,10 @@ STORE new_pagerank
     USING PigStorage('\t');
 """)
 
-params = { 'd': '0.85', 'docs_in': '/app/pagerank/links' }
+params = { 'd': "$damping_factor", 'docs_in': "$links_input" }
 out = ""
 for i in range(10):
-   out = "/app/pagerank/iter_" + str(i + 1)
+   out = "$base_output_path/iter_" + str(i + 1)
    params["docs_out"] = out
    Pig.fs("rmr " + out)
    stats = UPDATE.bind(params).runSingle()
@@ -54,7 +61,7 @@ sorted = ORDER reduced BY pr DESC;
 STORE sorted INTO '$docs_out' USING PigStorage('\t');
 """)
 
-params = {'docs_in': out, 'docs_out': '/app/pagerank/sorted'}
+params = {'docs_in': out, 'docs_out': "$base_output_path/ranks"}
 Pig.fs("rmr " + params['docs_out'])
 stats = SORT.bind(params).runSingle()
 if not stats.isSuccessful():

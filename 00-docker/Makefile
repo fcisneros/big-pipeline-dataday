@@ -9,7 +9,4 @@ build:
 	@echo "Building base images"
 	@docker build -t dataday/hadoop-master ./hadoop-master
 	@docker build -t dataday/hadoop-client ./hadoop-client
-	@docker build -t dataday/pig-client ./pig-client
 	#@docker build -t dataday/cc-examples ./cc-examples
-
-

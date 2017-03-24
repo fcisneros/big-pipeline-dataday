@@ -51,5 +51,4 @@ client:
 # Bad practice: orchestration missing
 pagerank: start
 	@docker-compose build
-	@docker-compose up links-pig
 	@docker-compose up pagerank-pig
