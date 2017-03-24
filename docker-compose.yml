@@ -36,15 +36,19 @@ services:
   wc-mapred:
     image: dataday/cc-examples
     #command: 'wc s3a://commoncrawl/crawl-data/CC-MAIN-2013-48/segments/1386163035819/wet/CC-MAIN-20131204131715-00000-ip-10-33-133-15.ec2.internal.warc.wet.gz /app/data/wordcount'
-    #command: 'wc s3a://commoncrawl/crawl-data/CC-MAIN-2013-48/segments/1386163035819/wet/*.warc.wat.gz /app/data/wordcount'
+    #command: 'wc s3a://commoncrawl/crawl-data/CC-MAIN-2013-48/segments/1386163035819/wet/*.warc.wet.gz /app/data/wordcount'
     command: 'wc /app/data/*.warc.wet.gz /app/data/wordcount'
     depends_on:
       - hadoop-master
 
 
   # PageRank using Pig
-  links-pig:
+  pagerank-pig:
     build: ./01-pagerank
-    command: '/app/data/*.warc.wat.gz /app/pagerank 0.5'
+    environment:
+      - INPUT=/app/data/*.warc.wat.gz
+      - OUTPUT=/app/pagerank
+      - DAMPING_FACTOR=0.75
+      - ITER_NUM=5
     depends_on:
       - hadoop-master
