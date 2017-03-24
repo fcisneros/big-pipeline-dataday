@@ -13,10 +13,10 @@ images:
 	@docker images | grep dataday
 
 clean: stop
+	@echo "Cleaning all resources"
+	@rm -rf output/*
 	@docker-compose down
-	@echo "Removing stopped containers"
-	@docker rm $(docker ps -a -q)
-	@echo "Removing dangling images"
+	#@docker rm $(docker ps -a -q)
 	@docker rmi $(docker images --quiet --filter "dangling=true")
 
 data:
