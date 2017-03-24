@@ -28,9 +28,10 @@ ENV PIG_HOME $PREFIX/pig
 ENV PATH $PATH:$HADOOP_HOME/bin:$PIG_HOME/bin
 
 # Hadoop config
-ADD *.xml $HADOOP_CONF_DIR/
+ADD conf/* $HADOOP_CONF_DIR/
 
 # hadoop-aws-*-.jar is not on classpath by default, so let's add it
 RUN echo 'export HADOOP_CLASSPATH=$HADOOP_CLASSPATH:$HADOOP_HOME/share/hadoop/tools/lib/*' >> $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh
+
 
 CMD ["/bin/bash"]
