@@ -19,7 +19,7 @@ UPDATE = Pig.compile("""
 
 previous_pagerank =
     LOAD '$docs_in'
-    USING PigStorage('\t')
+    USING PigStorage(',')
     AS ( url: chararray, pagerank: float, links:{ link: ( url: chararray ) } );
 
 outbound_pagerank =
@@ -33,20 +33,23 @@ new_pagerank =
         ( COGROUP outbound_pagerank BY to_url, previous_pagerank BY url INNER )
     GENERATE
         group AS url,
-        ( 1 - $d ) + $d * SUM ( outbound_pagerank.pagerank ) AS pagerank,
+        ( 1 - $d ) + ($d * SUM ( outbound_pagerank.pagerank )) AS pagerank,
         FLATTEN ( previous_pagerank.links ) AS links;
+
+-- filter dangling
+--new_pagerank = FILTER new_pagerank BY pagerank IS NOT NULL;
 
 STORE new_pagerank
     INTO '$docs_out'
-    USING PigStorage('\t');
+    USING PigStorage(',');
 """)
 
 params = { 'd': damping_factor, 'docs_in': links_input }
 out = ""
+Pig.fs("rmr " + base_output_path + "/iter*")
 for i in range(iterations):
    out = base_output_path + "/iter_" + str(i + 1)
    params["docs_out"] = out
-   Pig.fs("rmr " + out)
    stats = UPDATE.bind(params).runSingle()
    if not stats.isSuccessful():
       raise RuntimeError('Failed pagerank iter: ' + str(i + 1))
@@ -55,14 +58,15 @@ for i in range(iterations):
 SORT = Pig.compile("""
 pagerank =
     LOAD '$docs_in'
-    USING PigStorage('\t')
+    USING PigStorage(',')
     AS ( url: chararray, pr: float, links:{ link: ( url: chararray ) } );
 
 reduced = FOREACH pagerank GENERATE url, pr;
+reduced = FILTER reduced BY pr IS NOT NULL;
 
 sorted = ORDER reduced BY pr DESC;
 
-STORE sorted INTO '$docs_out' USING PigStorage('\t');
+STORE sorted INTO '$docs_out' USING PigStorage(',');
 """)
 
 params = {'docs_in': out, 'docs_out': base_output_path + "/ranks"}

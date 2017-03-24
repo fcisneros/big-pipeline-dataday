@@ -25,7 +25,7 @@ DAMPING_FACTOR=${DAMPING_FACTOR:='0.75'}
 ITER_NUM=${ITER_NUM:=10}
 
 echo "Running PageRank with input=${INPUT} :: output=${OUTPUT} :: damping=${DAMPING_FACTOR} :: iterations=${ITER_NUM}"
-#pig -f links.pig -param INPUT="${INPUT}" -param OUTPUT="${OUTPUT}/links" && \
+pig -f links.pig -param INPUT="${INPUT}" -param OUTPUT="${OUTPUT}/links" && \
 pig pagerank.py "${OUTPUT}/links" "${OUTPUT}" "${DAMPING_FACTOR}" "${ITER_NUM}"
 
 # Output error logs, if any

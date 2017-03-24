@@ -48,7 +48,7 @@ services:
     environment:
       - INPUT=/app/data/*.warc.wat.gz
       - OUTPUT=/app/pagerank
-      - DAMPING_FACTOR=0.75
-      - ITER_NUM=5
+      - DAMPING_FACTOR=0.5
+      - ITER_NUM=10
     depends_on:
       - hadoop-master
