@@ -11,3 +11,8 @@ hs_err_pid*
 # data files
 data/
 *.gz
+output/
+
+# temp files
+.started
+.copied

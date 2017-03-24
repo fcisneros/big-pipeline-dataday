@@ -4,26 +4,37 @@ services:
 
   hadoop-master:
     image: dataday/hadoop-master
-    volumes:
-      - ../data:/app/data
     ports:
       - 8088:8088
       - 50070:50070
+
 
   # Copy local data to hdfs
   data2hdfs:
     image: dataday/hadoop-client
     volumes:
-      - ../data:/app/data
+      - ./data:/app/data
     command: bash -c 'hadoop fs -mkdir -p /app/data && hadoop fs -put -f /app/data/* /app/data'
     depends_on:
       - hadoop-master
 
+
+  # Interactive client terminal
+  client:
+    image: dataday/hadoop-client
+    working_dir: /app
+    volumes:
+      - ./data:/app/data
+      - ./output:/app/output
+    command: /bin/bash
+    tty: true
+    depends_on:
+      - hadoop-master
+
+
   # Wordcount using MapReduce Java API
   wc-mapred:
     image: dataday/cc-examples
-    volumes:
-      - ../data:/app/data
     #command: 'wc s3a://commoncrawl/crawl-data/CC-MAIN-2013-48/segments/1386163035819/wet/CC-MAIN-20131204131715-00000-ip-10-33-133-15.ec2.internal.warc.wet.gz /app/data/wordcount'
     #command: 'wc s3a://commoncrawl/crawl-data/CC-MAIN-2013-48/segments/1386163035819/wet/*.warc.wat.gz /app/data/wordcount'
     command: 'wc /app/data/*.warc.wet.gz /app/data/wordcount'
@@ -33,21 +44,16 @@ services:
 
   # PageRank using Pig
   links-pig:
-    image: dataday/pig-client
-    command: 'links.pig -param INPUT=/app/data/*.warc.wat.gz -param OUTPUT=/app/data/pagerank/links'
+    build: ./01-pagerank
+    command: '/pagerank/links.pig -param INPUT=/app/data/*.warc.wat.gz -param OUTPUT=/app/pagerank/links'
     depends_on:
       - hadoop-master
 
   pagerank-pig:
+    build: ./01-pagerank
     image: dataday/pig-client
-    command: 'pagerank.py'
-
-  # Interactive client terminal
-  client:
-    image: dataday/hadoop-client
-    volumes:
-      - ../data:/app/data
-    command: /bin/bash
-    tty: true
+    command: '/pagerank/pagerank.py'
     depends_on:
       - hadoop-master
+
+

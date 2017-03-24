@@ -30,10 +30,10 @@ STORE new_pagerank
     USING PigStorage('\t');
 """)
 
-params = { 'd': '0.85', 'docs_in': '/app/data/pagerank/links' }
+params = { 'd': '0.85', 'docs_in': '/app/pagerank/links' }
 out = ""
 for i in range(10):
-   out = "/app/data/pagerank/iter_" + str(i + 1)
+   out = "/app/pagerank/iter_" + str(i + 1)
    params["docs_out"] = out
    Pig.fs("rmr " + out)
    stats = UPDATE.bind(params).runSingle()
@@ -54,7 +54,7 @@ sorted = ORDER reduced BY pr DESC;
 STORE sorted INTO '$docs_out' USING PigStorage('\t');
 """)
 
-params = {'docs_in': out, 'docs_out': '/app/data/pagerank/sorted'}
+params = {'docs_in': out, 'docs_out': '/app/pagerank/sorted'}
 Pig.fs("rmr " + params['docs_out'])
 stats = SORT.bind(params).runSingle()
 if not stats.isSuccessful():

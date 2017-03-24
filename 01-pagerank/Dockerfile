@@ -1,5 +1,5 @@
 FROM dataday/pig-client
 
-WORKDIR /app
+WORKDIR /pagerank
 
-ADD * ./
+ADD *.pig *.py ./
