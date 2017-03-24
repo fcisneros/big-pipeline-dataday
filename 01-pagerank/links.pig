@@ -26,7 +26,7 @@ resolved_links = FOREACH links GENERATE FLATTEN(resolve(page_url,html_base,relat
 -- Links from a page to itself, or multiple outbound links from one single page to another single page, are ignored
 filtered_links = FILTER resolved_links BY
   resolved IS NOT NULL
-  AND STARTSWITH(resolved, 'http') AND STARTSWITH(page_url, 'http')
+  --AND STARTSWITH(resolved, 'http') AND STARTSWITH(page_url, 'http')
   AND NOT (resolved matches '([^\\s]+(\\.(?i)(jpg|png|gif|bmp|svg))$)')
   AND page_url != resolved;
 

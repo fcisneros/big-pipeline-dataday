@@ -62,7 +62,6 @@ pagerank =
     AS ( url: chararray, pr: float, links:{ link: ( url: chararray ) } );
 
 reduced = FOREACH pagerank GENERATE url, pr;
-reduced = FILTER reduced BY pr IS NOT NULL;
 
 sorted = ORDER reduced BY pr DESC;
 

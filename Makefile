@@ -14,10 +14,10 @@ images:
 
 clean: stop
 	@echo "Cleaning all resources"
-	@rm -rf output/*
+	@sudo rm -rf output/*
 	@docker-compose down
-	#@docker rm $(docker ps -a -q)
-	@docker rmi $(docker images --quiet --filter "dangling=true")
+	@docker rm $(shell docker ps -a -q)
+	@docker rmi $(shell docker images --quiet --filter "dangling=true")
 
 data:
 	@echo "Downloading sample data"
