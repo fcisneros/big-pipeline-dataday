@@ -52,3 +52,7 @@ client:
 pagerank: start
 	@docker-compose build
 	@docker-compose up pagerank-pig
+
+text: start
+	@docker-compose build
+	@docker-compose up textnorm-pig

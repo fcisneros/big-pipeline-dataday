@@ -52,3 +52,12 @@ services:
       - ITER_NUM=5
     depends_on:
       - hadoop-master
+
+  # Text Normalization using Pig
+  textnorm-pig:
+    build: ./02-text-norm
+    environment:
+      - INPUT=/app/data/*.warc.wet.gz
+      - OUTPUT=/app/textnorm
+    depends_on:
+      - hadoop-master
