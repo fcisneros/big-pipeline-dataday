@@ -1,12 +1,10 @@
--- Extracts and formats links needed by the pagerank task
-
-REGISTER /usr/local/lib/warcutils-jar-with-dependencies.jar;
-DEFINE WarcLoader nl.surfsara.warcutils.pig.WarcFileLoader();
+REGISTER /usr/local/lib/textutils-pig-jar-with-dependencies.jar
+DEFINE normalize textutils.pig.udf.SimpleTextNormalizer();
 
 rmf $OUTPUT
 
--- load content from INPUT:
-raw = LOAD '$INPUT' USING WarcLoader
-  AS (url, type, content);
+-- load raw content from INPUT:
+raw = LOAD '$INPUT' USING PigStorage('\t') AS (url:chararray, type:chararray, content:chararray);
+normalized = FOREACH raw GENERATE url, normalize(content);
 
-STORE raw INTO '$OUTPUT/raw' USING PigStorage('\t');
+STORE normalized INTO '$OUTPUT' USING PigStorage('\t');

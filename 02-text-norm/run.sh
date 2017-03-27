@@ -15,13 +15,14 @@ EOF
 exit 1
 }
 
-hash pig 2>/dev/null || { echo >&2 ">>> pig binary is not installed or is not on your PATH env. Aborting."; exit 1; }
+#hash pig 2>/dev/null || { echo >&2 ">>> pig binary is not installed or is not on your PATH env. Aborting."; exit 1; }
 [ -z "$INPUT" ] && echo "Need to set INPUT variable" && usage ;
 
 OUTPUT=${OUTPUT:='/textnorm'}
 
 echo "Running Text Normalization with input=${INPUT} :: output=${OUTPUT}"
-pig -f normalize.pig -param INPUT="${INPUT}" -param OUTPUT="${OUTPUT}"
+#pig -f raw.pig -param INPUT="${INPUT}" -param OUTPUT="${OUTPUT}/raw"
+pig -f normalize.pig -param INPUT="${OUTPUT}/raw" -param OUTPUT="${OUTPUT}/normalized"
 
 # Output error logs, if any
 if ls pig_* 1> /dev/null 2>&1; then

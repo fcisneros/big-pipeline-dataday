@@ -22,6 +22,7 @@ services:
   # Interactive client terminal
   client:
     image: dataday/hadoop-client
+    #build: ./02-text-norm
     working_dir: /app
     volumes:
       - ./data:/app/data
@@ -56,6 +57,8 @@ services:
   # Text Normalization using Pig
   textnorm-pig:
     build: ./02-text-norm
+    volumes:
+      - ./output:/app/output
     environment:
       - INPUT=/app/data/*.warc.wet.gz
       - OUTPUT=/app/textnorm

@@ -37,5 +37,6 @@ RUN echo 'export HADOOP_CLASSPATH=$HADOOP_CLASSPATH:$HADOOP_HOME/share/hadoop/to
 #ADD https://github.com/fcisneros/webarchive-commons/releases/download/webarchive-commons-1.1.5-hadoop2/webarchive-commons-jar-with-dependencies.jar $PREFIX/lib/webarchive-commons-jar-with-dependencies.jar
 ADD webarchive-commons-jar-with-dependencies.jar $PREFIX/lib/webarchive-commons-jar-with-dependencies.jar
 ADD warcutils-jar-with-dependencies.jar $PREFIX/lib/warcutils-jar-with-dependencies.jar
+ADD textutils-pig-jar-with-dependencies.jar $PREFIX/lib/textutils-pig-jar-with-dependencies.jar
 
 CMD ["/bin/bash"]
