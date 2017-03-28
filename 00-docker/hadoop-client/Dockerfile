@@ -15,11 +15,6 @@ ENV PIG_VERSION 0.16.0
 RUN curl -s http://www-us.apache.org/dist/pig/pig-$PIG_VERSION/pig-$PIG_VERSION.tar.gz | tar -xz -C $PREFIX/
 RUN mv $PREFIX/pig-$PIG_VERSION $PREFIX/pig
 
-# Hive
-#ENV HIVE_VERSION 2.1.1
-#RUN curl -s http://www.eu.apache.org/dist/hive/hive-$HIVE_VERSION/apache-hive-$HIVE_VERSION-bin.tar.gz | tar -xz -C $PREFIX/
-#RUN mv $PREFIX/apache-hive-$HIVE_VERSION-bin $PREFIX/hive
-
 # Set the environment variables
 ENV HADOOP_HOME $PREFIX/hadoop
 ENV HADOOP_PREFIX $PREFIX/hadoop
@@ -34,9 +29,8 @@ ADD conf/* $HADOOP_CONF_DIR/
 RUN echo 'export HADOOP_CLASSPATH=$HADOOP_CLASSPATH:$HADOOP_HOME/share/hadoop/tools/lib/*' >> $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh
 
 # Add some 3rd party libraries
-#ADD https://github.com/fcisneros/webarchive-commons/releases/download/webarchive-commons-1.1.5-hadoop2/webarchive-commons-jar-with-dependencies.jar $PREFIX/lib/webarchive-commons-jar-with-dependencies.jar
-ADD webarchive-commons-jar-with-dependencies.jar $PREFIX/lib/webarchive-commons-jar-with-dependencies.jar
-ADD warcutils-jar-with-dependencies.jar $PREFIX/lib/warcutils-jar-with-dependencies.jar
-ADD textutils-pig-jar-with-dependencies.jar $PREFIX/lib/textutils-pig-jar-with-dependencies.jar
+ADD https://github.com/fcisneros/webarchive-commons/releases/download/webarchive-commons-1.1.5-hadoop2/webarchive-commons-jar-with-dependencies.jar $PREFIX/lib/webarchive-commons-jar-with-dependencies.jar
+ADD https://github.com/fcisneros/warcutils/releases/download/v1.2.1/warcutils-jar-with-dependencies.jar $PREFIX/lib/warcutils-jar-with-dependencies.jar
+ADD https://github.com/fcisneros/text-utils/releases/download/v0.1-SNAPSHOT/textutils-pig-jar-with-dependencies.jar $PREFIX/lib/textutils-pig-jar-with-dependencies.jar
 
 CMD ["/bin/bash"]

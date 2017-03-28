@@ -57,10 +57,17 @@ services:
   # Text Normalization using Pig
   textnorm-pig:
     build: ./02-text-norm
-    volumes:
-      - ./output:/app/output
     environment:
       - INPUT=/app/data/*.warc.wet.gz
       - OUTPUT=/app/textnorm
+    depends_on:
+      - hadoop-master
+
+  # Wordcount using Pig
+  wordcount-pig:
+    build: ./03-wordcount
+    environment:
+      - INPUT=/app/textnorm/normalized
+      - OUTPUT=/app/wordcount
     depends_on:
       - hadoop-master

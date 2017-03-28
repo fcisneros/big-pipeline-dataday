@@ -14,10 +14,12 @@ images:
 
 clean: stop
 	@echo "Cleaning all resources"
-	@sudo rm -rf output/*
 	@docker-compose down
+	@sleep 15
 	@docker rm $(shell docker ps -a -q)
 	@docker rmi $(shell docker images --quiet --filter "dangling=true")
+	@sudo rm -rf output/*
+	@rm -f .copied
 
 data:
 	@echo "Downloading sample data"
@@ -30,29 +32,35 @@ data:
 	@sleep 30
 	@touch .started
 
-.copied:
-	@echo "Copying data/* to hdfs"
-	@docker-compose run data2hdfs
-	@touch .copied
-
-start: .started .copied # Starts local hadoop cluster and copies content of data/ into HDFS
+start: .started # Starts local hadoop cluster
 	@docker-compose ps
 
 stop:
 	@docker-compose stop
 	rm -f .started
-	rm -f .copied
+
+copy: .copied
+	@echo "Copying sample data to hdfs..."
+
+.copied:
+	@docker-compose run data2hdfs
+	@touch .copied
+
 
 client:
 	@echo "Starting client terminal"
 	@docker-compose run --rm client
 
 
-# Bad practice: orchestration missing
+# Bad practice: orchestration missing!
 pagerank: start
 	@docker-compose build
 	@docker-compose up pagerank-pig
 
-text: start
+textnorm: start
 	@docker-compose build
 	@docker-compose up textnorm-pig
+
+wordcount: start
+	@docker-compose build
+	@docker-compose up wordcount-pig
