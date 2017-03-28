@@ -15,11 +15,9 @@ images:
 clean: stop
 	@echo "Cleaning all resources"
 	@docker-compose down
-	@sleep 15
-	@docker rm $(shell docker ps -a -q)
-	@docker rmi $(shell docker images --quiet --filter "dangling=true")
 	@sudo rm -rf output/*
 	@rm -f .copied
+	#@docker rmi $(shell docker images --quiet --filter "dangling=true")
 
 data:
 	@echo "Downloading sample data"
@@ -40,9 +38,9 @@ stop:
 	rm -f .started
 
 copy: .copied
-	@echo "Copying sample data to hdfs..."
 
 .copied:
+	@echo "Copying sample data to hdfs..."
 	@docker-compose run data2hdfs
 	@touch .copied
 

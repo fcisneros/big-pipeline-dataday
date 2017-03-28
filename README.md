@@ -92,6 +92,13 @@ Para salir de la sesión presionar ctrl+d
 Los resultados de los pipelines se deben encontrar en la carpeta output/
 
 
+### Clean Up
+Para detener el cluster local y limpiar los recursos usados ejecutar:
+```bash
+$ make clean
+```
+
+
 ## ToDo (mejoras)
 * Agregar task para eliminar [stopwords](https://en.wikipedia.org/wiki/Stop_words).
 * Agregar orquestación de pipelines ([oozie](http://oozie.apache.org/), [azkaban](https://azkaban.github.io/) o [luigi](https://github.com/spotify/luigi)).

@@ -34,11 +34,11 @@ services:
 
 
   # Wordcount using MapReduce Java API
-  wc-mapred:
+  wordcount-mapred:
     image: dataday/cc-examples
-    #command: 'wc s3a://commoncrawl/crawl-data/CC-MAIN-2013-48/segments/1386163035819/wet/CC-MAIN-20131204131715-00000-ip-10-33-133-15.ec2.internal.warc.wet.gz /app/data/wordcount'
-    #command: 'wc s3a://commoncrawl/crawl-data/CC-MAIN-2013-48/segments/1386163035819/wet/*.warc.wet.gz /app/data/wordcount'
-    command: 'wc /app/data/*.warc.wet.gz /app/data/wordcount'
+    #command: 'wc s3a://commoncrawl/crawl-data/CC-MAIN-2013-48/segments/1386163035819/wet/CC-MAIN-20131204131715-00000-ip-10-33-133-15.ec2.internal.warc.wet.gz /app/wordcount-mr'
+    #command: 'wc s3a://commoncrawl/crawl-data/CC-MAIN-2013-48/segments/1386163035819/wet/*.warc.wet.gz /app/wordcount-mr'
+    command: 'wc /app/data/*.warc.wet.gz /app/wordcount-mr'
     depends_on:
       - hadoop-master
 

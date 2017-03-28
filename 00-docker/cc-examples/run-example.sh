@@ -25,13 +25,13 @@ inputPath="${2}"
 outputPath="${3}"
 
 if [[ $1 == "wc" ]]; then
-  hadoop jar $JAR org.commoncrawl.examples.mapreduce.WETWordCount -Dinput=$inputPath -Doutput=$outputPath && \
+  hadoop jar $JAR org.commoncrawl.examples.mapreduce.WETWordCount -Dinput=$inputPath -Doutput=$outputPath
 
   exit 0
 fi
 
 if [[ $1 == "st" ]]; then
-  hadoop jar $JAR org.commoncrawl.examples.mapreduce.WATServerType -Dinput=$inputPath -Doutput=$outputPath && \
+  hadoop jar $JAR org.commoncrawl.examples.mapreduce.WATServerType -Dinput=$inputPath -Doutput=$outputPath
 
   exit 0
 fi
